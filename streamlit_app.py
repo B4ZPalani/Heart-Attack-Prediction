@@ -6,7 +6,7 @@ import sklearn
 
 # Set page configuration outside of any function
 st.set_page_config(
-    page_title="Heart Disease Prediction App",
+    page_title="ByteForza - Heart Attack Prediction App",
     page_icon="images/heart-fav.png"
 )
 
@@ -24,7 +24,7 @@ def main():
     col1, col2 = st.columns([1, 3])
 
     with col1:
-        st.image("images/AIdocter.png",
+        st.image("images/AIdocter.jpg",
                  caption="I'll help you diagnose your heart health! - Dr. ByteForza AI",
                  width=150)
         submit = st.button("Predict")
