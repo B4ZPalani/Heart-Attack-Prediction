@@ -5,18 +5,19 @@ import numpy as np
 import pickle
 import sklearn
 
+# Set page configuration outside of any function
+st.set_page_config(
+    page_title="Heart Disease Prediction App",
+    page_icon="images/heart-fav.png"
+)
 
-
-
+# The main function
 def main():
+    # Cache the results of expensive operations with st.cache
     @st.cache(persist=True)
-   
-
-
-    st.set_page_config(
-        page_title="Heart Disease Prediction App",
-        page_icon="images/heart-fav.png"
-    )
+    def load_data():
+        # Placeholder for any data loading or processing logic
+        pass
 
     st.title("Heart Disease Prediction")
     st.subheader("Are you wondering about the condition of your heart? "
@@ -40,17 +41,13 @@ def main():
         This application is based on it because it has proven to be better than the random forest
         (it achieves an accuracy of about 80%, which is quite good).
         
-        To predict your heart disease status, simply follow the steps bellow:
+        To predict your heart disease status, simply follow the steps below:
         1. Enter the parameters that best describe you;
-        2. Press the "Predict" button and wait for the result.""")
-        
-
-
-
+        2. Press the "Predict" button and wait for the result.
+        """)
 
     st.sidebar.title("Feature Selection")
     st.sidebar.image("images/heart-sidebar.png", width=100)
 
- 
 if __name__ == "__main__":
     main()
