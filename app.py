@@ -30,7 +30,7 @@ def main():
                  width=150)
         submit = st.button("Predict")
     with col2:
-        st.markdown("
+        st.markdown("""
         Did you know that machine learning models can help you
         predict heart disease pretty accurately? In this app, you can
         estimate your chance of heart disease (yes/no) in seconds!
@@ -42,7 +42,7 @@ def main():
         
         To predict your heart disease status, simply follow the steps bellow:
         1. Enter the parameters that best describe you;
-        2. Press the "Predict" button and wait for the result.");
+        2. Press the "Predict" button and wait for the result.""");
         
 
 
