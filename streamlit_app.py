@@ -42,7 +42,7 @@ def main():
         
         To predict your heart disease status, simply follow the steps bellow:
         1. Enter the parameters that best describe you;
-        2. Press the "Predict" button and wait for the result.
+        2. Press the "Predict" button and wait for the result.""")
         
 
 
