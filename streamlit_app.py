@@ -18,15 +18,14 @@ def main():
         # Placeholder for any data loading or processing logic
         pass
 
-    st.title("Heart Disease Prediction")
-    st.subheader("Are you wondering about the condition of your heart? "
-                 "This app will help you to diagnose it!")
+    st.title("Heart Attack Prediction")
+    st.subheader("Concerned about your heart health? This app is here to help you assess your risk and take proactive steps to safeguard your heart!")
 
     col1, col2 = st.columns([1, 3])
 
     with col1:
-        st.image("images/doctor.png",
-                 caption="I'll help you diagnose your heart health! - Dr. Logistic Regression",
+        st.image("images/AIdocter.png",
+                 caption="I'll help you diagnose your heart health! - Dr. ByteForza AI",
                  width=150)
         submit = st.button("Predict")
     with col2:
