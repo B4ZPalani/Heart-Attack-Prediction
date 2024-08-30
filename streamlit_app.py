@@ -24,7 +24,7 @@ def main():
     col1, col2 = st.columns([1, 3])
 
     with col1:
-        st.image("images/AIdocter.jpg",
+        st.image("images/aidocter.jpg",
                  caption="I'll help you diagnose your heart health! - Dr. ByteForza AI",
                  width=150)
         submit = st.button("Predict")
