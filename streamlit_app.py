@@ -6,7 +6,7 @@ import sklearn
 
 
 DATASET_PATH = "data/heart_2020_cleaned.csv"
---LOG_MODEL_PATH = "model/logistic_regression.pkl"
+
 
 
 def main():
