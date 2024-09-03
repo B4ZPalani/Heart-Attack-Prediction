@@ -17,7 +17,6 @@ def load_dataset() -> pd.DataFrame:
 
 # User input features function
 def user_input_features(heart: pd.DataFrame) -> pd.DataFrame:
-    race = st.sidebar.selectbox("Race", options=heart['Race'].unique())
     sex = st.sidebar.selectbox("Sex", options=heart['Sex'].unique())
     age_cat = st.sidebar.selectbox("Age category", options=heart['AgeCategory'].unique())
     bmi_cat = st.sidebar.selectbox("BMI category", options=heart['BMICategory'].unique())
@@ -28,7 +27,6 @@ def user_input_features(heart: pd.DataFrame) -> pd.DataFrame:
     phys_act = st.sidebar.selectbox("Have you played any sports (running, biking, etc.) in the past month?", options=("No", "Yes"))
     smoking = st.sidebar.selectbox("Have you smoked at least 100 cigarettes in your entire life (approx. 5 packs)?", options=("No", "Yes"))
     alcohol_drink = st.sidebar.selectbox("Do you have more than 14 drinks of alcohol (men) or more than 7 (women) in a week?", options=("No", "Yes"))
-    stroke = st.sidebar.selectbox("Did you have a stroke?", options=("No", "Yes"))
     diff_walk = st.sidebar.selectbox("Do you have serious difficulty walking or climbing stairs?", options=("No", "Yes"))
     diabetic = st.sidebar.selectbox("Have you ever had diabetes?", options=heart['Diabetic'].unique())
     asthma = st.sidebar.selectbox("Do you have asthma?", options=("No", "Yes"))
@@ -42,11 +40,9 @@ def user_input_features(heart: pd.DataFrame) -> pd.DataFrame:
         "BMICategory": [bmi_cat],
         "Smoking": [smoking],
         "AlcoholDrinking": [alcohol_drink],
-        "Stroke": [stroke],
         "DiffWalking": [diff_walk],
         "Sex": [sex],
         "AgeCategory": [age_cat],
-        "Race": [race],
         "Diabetic": [diabetic],
         "PhysicalActivity": [phys_act],
         "GenHealth": [gen_health],
