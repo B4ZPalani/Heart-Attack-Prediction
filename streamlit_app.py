@@ -14,7 +14,60 @@ import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 
 
 df = pd.read_csv(DATASET_PATH);
-df.drop(['Stroke']);
+
+
+
+df['Smoking'] = pd.Series(np.where(df['Smoking'] == 'Yes', 1, 0))
+df['AlcoholDrinking'] = pd.Series(np.where(df['AlcoholDrinking'] == 'Yes', 1, 0))
+df['Stroke'] = pd.Series(np.where(df['Stroke'] == 'Yes', 1, 0))
+df['DiffWalking'] = pd.Series(np.where(df['DiffWalking'] == 'Yes', 1, 0))
+df['PhysicalActivity'] = pd.Series(np.where(df['PhysicalActivity'] == 'Yes', 1, 0))
+df['Asthma'] = pd.Series(np.where(df['Asthma'] == 'Yes', 1, 0))
+df['KidneyDisease'] = pd.Series(np.where(df['KidneyDisease'] == 'Yes', 1, 0))
+df['SkinCancer'] = pd.Series(np.where(df['SkinCancer'] == 'Yes', 1, 0))
+df['HeartDisease'] = pd.Series(np.where(df['HeartDisease'] == 'Yes', 1, 0))
+
+
+from sklearn.preprocessing import LabelEncoder
+le = LabelEncoder()
+df['Sex']=le.fit_transform(df['Sex'])
+df['AgeCategory']=le.fit_transform(df['AgeCategory'])
+df['Race']=le.fit_transform(df['Race'])
+df['Diabetic']=le.fit_transform(df['Diabetic'])
+df['GenHealth']=le.fit_transform(df['GenHealth'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if 'Stroke' in df.columns:
+    df.drop(['Stroke'], axis=1, inplace=True)
 X = df.drop('HeartDisease',axis=1);
 y = df['HeartDisease'];
 
