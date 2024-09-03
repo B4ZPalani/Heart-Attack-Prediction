@@ -6,8 +6,33 @@ import sklearn
 
 DATASET_PATH = "data/heart_2020_cleaned.csv"
 
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+
+# Input data files are available in the read-only "../input/" directory
+# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
+
+
+df = pd.read_csv(DATASET_PATH);
+df.drop(['Stroke']);
+X = df.drop('HeartDisease',axis=1);
+y = df['HeartDisease'];
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+from sklearn.linear_model import LogisticRegression
+# Initialize and train the Logistic Regression model
+logistic_model = LogisticRegression(random_state=42, max_iter=1000)
+logistic_model.fit(X_train, y_train)
+
+from sklearn.ensemble import RandomForestClassifier
+# Initialize and train the RandomForest model
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_model.fit(X_train, y_train)
+
 # Load the dataset
-@st.cache(persist=True)
+@st.cache_resource
 def load_dataset() -> pd.DataFrame:
     heart_df = pd.read_csv(DATASET_PATH)
     heart_df = pd.DataFrame(np.sort(heart_df.values, axis=0),
