@@ -5,18 +5,11 @@ import pickle
 import sklearn
 
 DATASET_PATH = "data/heart_2020_cleaned.csv"
-
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-
 # Input data files are available in the read-only "../input/" directory
 # For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
-
-
-df = pd.read_csv(DATASET_PATH);
-
-
-
+df = pd.read_csv(DATASET_PATH)
 df['Smoking'] = pd.Series(np.where(df['Smoking'] == 'Yes', 1, 0))
 df['AlcoholDrinking'] = pd.Series(np.where(df['AlcoholDrinking'] == 'Yes', 1, 0))
 df['Stroke'] = pd.Series(np.where(df['Stroke'] == 'Yes', 1, 0))
@@ -26,8 +19,6 @@ df['Asthma'] = pd.Series(np.where(df['Asthma'] == 'Yes', 1, 0))
 df['KidneyDisease'] = pd.Series(np.where(df['KidneyDisease'] == 'Yes', 1, 0))
 df['SkinCancer'] = pd.Series(np.where(df['SkinCancer'] == 'Yes', 1, 0))
 df['HeartDisease'] = pd.Series(np.where(df['HeartDisease'] == 'Yes', 1, 0))
-
-
 from sklearn.preprocessing import LabelEncoder
 le = LabelEncoder()
 df['Sex']=le.fit_transform(df['Sex'])
@@ -35,55 +26,12 @@ df['AgeCategory']=le.fit_transform(df['AgeCategory'])
 df['Race']=le.fit_transform(df['Race'])
 df['Diabetic']=le.fit_transform(df['Diabetic'])
 df['GenHealth']=le.fit_transform(df['GenHealth'])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if 'Stroke' in df.columns:
     df.drop(['Stroke'], axis=1, inplace=True)
-X = df.drop('HeartDisease',axis=1);
-y = df['HeartDisease'];
-
+X = df.drop('HeartDisease',axis=1)
+y = df['HeartDisease']
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-from sklearn.linear_model import LogisticRegression
-# Initialize and train the Logistic Regression model
-logistic_model = LogisticRegression(random_state=42, max_iter=1000)
-logistic_model.fit(X_train, y_train)
-
-from sklearn.ensemble import RandomForestClassifier
-# Initialize and train the RandomForest model
-rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
-rf_model.fit(X_train, y_train)
-
 # Load the dataset
 @st.cache_resource
 def load_dataset() -> pd.DataFrame:
@@ -92,7 +40,6 @@ def load_dataset() -> pd.DataFrame:
                             index=heart_df.index,
                             columns=heart_df.columns)
     return heart_df
-
 # User input features function
 def user_input_features(heart: pd.DataFrame) -> pd.DataFrame:
     sex = st.sidebar.selectbox("Sex", options=heart['Sex'].unique())
@@ -110,7 +57,6 @@ def user_input_features(heart: pd.DataFrame) -> pd.DataFrame:
     asthma = st.sidebar.selectbox("Do you have asthma?", options=("No", "Yes"))
     kid_dis = st.sidebar.selectbox("Do you have kidney disease?", options=("No", "Yes"))
     skin_canc = st.sidebar.selectbox("Do you have skin cancer?", options=("No", "Yes"))
-
     features = pd.DataFrame({
         "PhysicalHealth": [phys_health],
         "MentalHealth": [ment_health],
@@ -128,31 +74,25 @@ def user_input_features(heart: pd.DataFrame) -> pd.DataFrame:
         "KidneyDisease": [kid_dis],
         "SkinCancer": [skin_canc]
     })
-
     return features
-
 # Set page configuration outside of any function
 st.set_page_config(
     page_title="ByteForza - Heart Attack Prediction App",
     page_icon="images/heart-fav.png"
 )
-
 # The main function
 def main():
     # Load dataset
     heart = load_dataset()
-
     # Set up the title and description
     st.title("Heart Attack Prediction")
     st.subheader("Concerned about your heart health? This app is here to help you assess your risk and take proactive steps to safeguard your heart!")
-
     # Display the image and prediction button
     col1, col2 = st.columns([1, 3])
-
     with col1:
         st.image("images/aidocter.jpg",
-                 caption="I'll help you diagnose your heart health! - Dr. ByteForza AI",
-                 width=200)
+                caption="I'll help you diagnose your heart health! - Dr. ByteForza AI",
+                width=200)
         submit = st.button("Predict")
     with col2:
         st.markdown("""
@@ -169,7 +109,6 @@ def main():
         1. Enter the parameters that best describe you;
         2. Press the "Predict" button and wait for the result.
         """)
-
     # Sidebar for user inputs
     st.sidebar.title("Feature Selection")
     st.sidebar.image("images/heart-sidebar.png", width=100)
@@ -180,6 +119,5 @@ def main():
     if submit:
         st.write("User input features:")
         st.write(input_df)
-
 if __name__ == "__main__":
     main()
