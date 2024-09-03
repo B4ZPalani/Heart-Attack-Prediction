@@ -74,7 +74,7 @@ def main():
     with col1:
         st.image("images/aidocter.jpg",
                  caption="I'll help you diagnose your heart health! - Dr. ByteForza AI",
-                 width=150)
+                 width=200)
         submit = st.button("Predict")
     with col2:
         st.markdown("""
