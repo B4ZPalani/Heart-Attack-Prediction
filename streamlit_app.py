@@ -1,98 +1,122 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import pickle
 import sklearn
 
-DATASET_PATH = "data/heart_2020_cleaned.csv"
-import numpy as np # linear algebra
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-# Input data files are available in the read-only "../input/" directory
-# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
-df = pd.read_csv(DATASET_PATH)
-df['Smoking'] = pd.Series(np.where(df['Smoking'] == 'Yes', 1, 0))
-df['AlcoholDrinking'] = pd.Series(np.where(df['AlcoholDrinking'] == 'Yes', 1, 0))
-df['Stroke'] = pd.Series(np.where(df['Stroke'] == 'Yes', 1, 0))
-df['DiffWalking'] = pd.Series(np.where(df['DiffWalking'] == 'Yes', 1, 0))
-df['PhysicalActivity'] = pd.Series(np.where(df['PhysicalActivity'] == 'Yes', 1, 0))
-df['Asthma'] = pd.Series(np.where(df['Asthma'] == 'Yes', 1, 0))
-df['KidneyDisease'] = pd.Series(np.where(df['KidneyDisease'] == 'Yes', 1, 0))
-df['SkinCancer'] = pd.Series(np.where(df['SkinCancer'] == 'Yes', 1, 0))
-df['HeartDisease'] = pd.Series(np.where(df['HeartDisease'] == 'Yes', 1, 0))
-from sklearn.preprocessing import LabelEncoder
-le = LabelEncoder()
-df['Sex']=le.fit_transform(df['Sex'])
-df['AgeCategory']=le.fit_transform(df['AgeCategory'])
-df['Race']=le.fit_transform(df['Race'])
-df['Diabetic']=le.fit_transform(df['Diabetic'])
-df['GenHealth']=le.fit_transform(df['GenHealth'])
-if 'Stroke' in df.columns:
-    df.drop(['Stroke'], axis=1, inplace=True)
-X = df.drop('HeartDisease',axis=1)
-y = df['HeartDisease']
-from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-# Load the dataset
-@st.cache_resource
-def load_dataset() -> pd.DataFrame:
-    heart_df = pd.read_csv(DATASET_PATH)
-    heart_df = pd.DataFrame(np.sort(heart_df.values, axis=0),
-                            index=heart_df.index,
-                            columns=heart_df.columns)
-    return heart_df
-# User input features function
-def user_input_features(heart: pd.DataFrame) -> pd.DataFrame:
-    sex = st.sidebar.selectbox("Sex", options=heart['Sex'].unique())
-    age_cat = st.sidebar.selectbox("Age category", options=heart['AgeCategory'].unique())
-    bmi_cat = st.sidebar.selectbox("BMI category", options=heart['BMICategory'].unique())
-    sleep_time = st.sidebar.number_input("How many hours on average do you sleep?", 0, 24, 7)
-    gen_health = st.sidebar.selectbox("How can you define your general health?", options=heart['GenHealth'].unique())
-    phys_health = st.sidebar.number_input("For how many days during the past 30 days was your physical health not good?", 0, 30, 0)
-    ment_health = st.sidebar.number_input("For how many days during the past 30 days was your mental health not good?", 0, 30, 0)
-    phys_act = st.sidebar.selectbox("Have you played any sports (running, biking, etc.) in the past month?", options=("No", "Yes"))
-    smoking = st.sidebar.selectbox("Have you smoked at least 100 cigarettes in your entire life (approx. 5 packs)?", options=("No", "Yes"))
-    alcohol_drink = st.sidebar.selectbox("Do you have more than 14 drinks of alcohol (men) or more than 7 (women) in a week?", options=("No", "Yes"))
-    diff_walk = st.sidebar.selectbox("Do you have serious difficulty walking or climbing stairs?", options=("No", "Yes"))
-    diabetic = st.sidebar.selectbox("Have you ever had diabetes?", options=heart['Diabetic'].unique())
-    asthma = st.sidebar.selectbox("Do you have asthma?", options=("No", "Yes"))
-    kid_dis = st.sidebar.selectbox("Do you have kidney disease?", options=("No", "Yes"))
-    skin_canc = st.sidebar.selectbox("Do you have skin cancer?", options=("No", "Yes"))
-    features = pd.DataFrame({
-        "PhysicalHealth": [phys_health],
-        "MentalHealth": [ment_health],
-        "SleepTime": [sleep_time],
-        "BMICategory": [bmi_cat],
-        "Smoking": [smoking],
-        "AlcoholDrinking": [alcohol_drink],
-        "DiffWalking": [diff_walk],
-        "Sex": [sex],
-        "AgeCategory": [age_cat],
-        "Diabetic": [diabetic],
-        "PhysicalActivity": [phys_act],
-        "GenHealth": [gen_health],
-        "Asthma": [asthma],
-        "KidneyDisease": [kid_dis],
-        "SkinCancer": [skin_canc]
-    })
-    return features
 # Set page configuration outside of any function
 st.set_page_config(
     page_title="ByteForza - Heart Attack Prediction App",
     page_icon="images/heart-fav.png"
 )
-# The main function
-def main():
-    # Load dataset
-    heart = load_dataset()
-    # Set up the title and description
-    st.title("Heart Attack Prediction")
+
+dataSetPath = "data/heart_2020_cleaned.csv"
+
+def createUserInput(heart: pd.DataFrame) -> pd.DataFrame:
+    race = st.sidebar.selectbox("Race", options=heart['Race'].unique(), key="Race")
+    sex = st.sidebar.selectbox("Sex", options=heart['Sex'].unique(), key="sex")
+    age_cat = st.sidebar.selectbox("Age category", options=heart['AgeCategory'].unique(), key="age_cat")
+    bmi_cat = st.sidebar.selectbox("BMI category", options=heart['BMICategory'].unique(), key="bmi_cat")
+    sleep_time = st.sidebar.number_input("How many hours on average do you sleep?", 0, 24, 7, key="sleep_time")
+    gen_health = st.sidebar.selectbox("How can you define your general health?", options=heart['GenHealth'].unique(), key="gen_health")
+    phys_health = st.sidebar.number_input("For how many days during the past 30 days was your physical health not good?", 0, 30, 0, key="phys_health")
+    ment_health = st.sidebar.number_input("For how many days during the past 30 days was your mental health not good?", 0, 30, 0, key="ment_health")
+    phys_act = st.sidebar.selectbox("Have you played any sports (running, biking, etc.) in the past month?", options=("No", "Yes"), key="phys_act")
+    smoking = st.sidebar.selectbox("Have you smoked at least 100 cigarettes in your entire life (approx. 5 packs)?", options=("No", "Yes"), key="smoking")
+    alcohol_drink = st.sidebar.selectbox("Do you have more than 14 drinks of alcohol (men) or more than 7 (women) in a week?", options=("No", "Yes"), key="alcohol_drink")
+    diff_walk = st.sidebar.selectbox("Do you have serious difficulty walking or climbing stairs?", options=("No", "Yes"), key="diff_walk")
+    diabetic = st.sidebar.selectbox("Have you ever had diabetes?", options=heart['Diabetic'].unique(), key="diabetic")
+    asthma = st.sidebar.selectbox("Do you have asthma?", options=("No", "Yes"), key="asthma")
+    kid_dis = st.sidebar.selectbox("Do you have kidney disease?", options=("No", "Yes"), key="kid_dis")
+    skin_canc = st.sidebar.selectbox("Do you have skin cancer?", options=("No", "Yes"), key="skin_canc")
+    
+    features = pd.DataFrame({
+        "BMICategory": [bmi_cat],
+        "Smoking": [smoking],
+        "AlcoholDrinking": [alcohol_drink],
+        "PhysicalHealth": [phys_health],
+        "MentalHealth": [ment_health],
+        "DiffWalking": [diff_walk],
+        "Sex": [sex],
+        "AgeCategory": [age_cat],
+        "Race":[race],
+        "Diabetic": [diabetic],
+        "PhysicalActivity": [phys_act],
+        "GenHealth": [gen_health],
+        "SleepTime": [sleep_time],
+        "Asthma": [asthma],
+        "KidneyDisease": [kid_dis],
+        "SkinCancer": [skin_canc]
+    })
+    return features
+
+@st.cache_data
+def readDataset():
+    df = pd.read_csv(dataSetPath)
+    return df
+
+def basicCleansing(df):
+    st.write("before cleansing")
+    st.write(df.head(100))
+    df['Smoking'] = pd.Series(np.where(df['Smoking'] == 'Yes', 1, 0))
+    df['AlcoholDrinking'] = pd.Series(np.where(df['AlcoholDrinking'] == 'Yes', 1, 0))
+    df['DiffWalking'] = pd.Series(np.where(df['DiffWalking'] == 'Yes', 1, 0))
+    df['PhysicalActivity'] = pd.Series(np.where(df['PhysicalActivity'] == 'Yes', 1, 0))
+    df['Asthma'] = pd.Series(np.where(df['Asthma'] == 'Yes', 1, 0))
+    df['KidneyDisease'] = pd.Series(np.where(df['KidneyDisease'] == 'Yes', 1, 0))
+    df['SkinCancer'] = pd.Series(np.where(df['SkinCancer'] == 'Yes', 1, 0))
+    if 'HeartDisease' in df.columns:
+        df['HeartDisease'] = pd.Series(np.where(df['HeartDisease'] == 'Yes', 1, 0))
+
+    # Set up the Label Encoding
+    from sklearn.preprocessing import LabelEncoder
+    le = LabelEncoder()
+    df['Sex'] = le.fit_transform(df['Sex'])
+    df['AgeCategory'] = le.fit_transform(df['AgeCategory'])
+    df['BMICategory'] = le.fit_transform(df['BMICategory'])
+    df['Race'] = le.fit_transform(df['Race'])
+    df['Diabetic'] = le.fit_transform(df['Diabetic'])
+    df['GenHealth'] = le.fit_transform(df['GenHealth'])
+
+    if 'Stroke' in df.columns:
+        df.drop(['Stroke'],axis=1,inplace=True)
+    if 'PhysicalActivity' in df.columns:
+        df.drop(['PhysicalActivity'],axis=1,inplace=True)
+    if 'GenHealth' in df.columns:
+        df.drop(['GenHealth'], axis=1,inplace=True)
+    if 'SleepTime' in df.columns:
+        df.drop(['SleepTime'], axis=1,inplace=True)        
+    return df
+
+def splitTestTrainData(df):
+    df = basicCleansing(df)
+    X = df.drop('HeartDisease', axis=1)
+    y = df['HeartDisease']
+    from sklearn.model_selection import train_test_split
+    return train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+def trainLogisticRegressionModel(X_train, y_train,X_test, y_test):
+    # Initialize and train the Logistic Regression model
+    from sklearn.linear_model import LogisticRegression
+    lr_model = LogisticRegression(random_state=42, max_iter=1000)
+    st.write(X_train.head(100))
+    lr_model.fit(X_train, y_train)
+    y_lr_pred = lr_model.predict(X_test)
+    st.write(y_lr_pred.shape)
+    # unique, counts = np.unique(y_lr_pred, return_counts=True)
+    # count_dict = dict(zip(unique, counts))
+    # st.write(count_dict)
+    return lr_model
+
+def createUIElements():
+    st.title("Heart Attack Prediction1")
     st.subheader("Concerned about your heart health? This app is here to help you assess your risk and take proactive steps to safeguard your heart!")
     # Display the image and prediction button
     col1, col2 = st.columns([1, 3])
     with col1:
         st.image("images/aidocter.jpg",
-                caption="I'll help you diagnose your heart health! - Dr. ByteForza AI",
-                width=200)
+                 caption="I'll help you diagnose your heart health! - Dr. ByteForza AI",
+                 width=200)
         submit = st.button("Predict")
     with col2:
         st.markdown("""
@@ -112,12 +136,35 @@ def main():
     # Sidebar for user inputs
     st.sidebar.title("Feature Selection")
     st.sidebar.image("images/heart-sidebar.png", width=100)
-    
-    # Get user input features
-    input_df = user_input_features(heart)
-    
+    heart_data = readDataset()
+    user_input = createUserInput(heart_data)
+
     if submit:
-        st.write("User input features:")
-        st.write(input_df)
+        predictionByUserInput(user_input)
+
+def predictionByUserInput(user_input):
+    df = readDataset()
+    X_train, X_test, y_train, y_test = splitTestTrainData(df)
+    model = trainLogisticRegressionModel(X_train, y_train,X_test, y_test)
+    
+    cleaned_df = basicCleansing(user_input)
+    prediction = model.predict(cleaned_df)
+    prediction_prob = model.predict_proba(cleaned_df)
+    if prediction == 0:
+            st.markdown(f"**The probability that you'll have"
+                        f" heart disease is {round(prediction_prob[0][1] * 100, 2)}%."
+                        f" You are healthy!**")
+            st.image("images/heart-okay.jpg",
+                     caption="Your heart seems to be okay! - Dr. ByteForza Regression")
+    else:
+            st.markdown(f"**The probability that you will have"
+                        f" heart disease is {round(prediction_prob[0][1] * 100, 2)}%."
+                        f" It sounds like you are not healthy.**")
+            st.image("images/heart-bad.jpg",
+                     caption="I'm not satisfied with the condition of your heart! - Dr. ByteForza Regression")
+
+def main():
+    createUIElements()
+
 if __name__ == "__main__":
     main()
