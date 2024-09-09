@@ -4,16 +4,15 @@ import pandas  as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import pickle
+import joblib
 from sklearn.linear_model import LogisticRegression
 
-# App logo [optionnal]
-#st.image("heart-care.jpg", use_column_width=True)
 
-# create streamlit interface, asome info about the app
-st.set_page_config(
-    page_title="ByteForza - Heart Attack Prediction App",
-    page_icon="images/heart-fav.png"
-)
+@st.cache_resource
+def loadModels():
+        # Load the models dictionary
+    filename = 'model/heart-attack-models.pkl'
+    return joblib.load(open(filename, 'rb'))
 
 st.subheader("Heart Attack Prediction")
 col1, col2 = st.columns([3,1])
@@ -153,8 +152,7 @@ dataToPredic.replace("Male",1,inplace=True)
 def loadModels():
         # Load the models dictionary
     filename = 'model/heart-attack-models.pkl'
-    return pickle.load(open(filename, 'rb'))
-
+    return joblib.load(open(filename, 'rb'))
 
 if submit:
 
@@ -209,5 +207,7 @@ if submit:
         else:
             st.markdown(f"**The probability that you'll have heart disease is {round(random_forest_result_prob[0][1] * 100, 2)}%. You might be at risk!**")
             st.image("images/heart-bad.jpg", caption="Your heart might be at risk! - Dr. ByteForza Forest")
+
+  
 
   
