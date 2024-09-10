@@ -14,7 +14,7 @@ def loadModels():
     filename = 'model/heart-attack-models.pkl'
     return joblib.load(open(filename, 'rb'))
 
-st.subheader("Heart Attack Prediction1")
+st.subheader("Heart Attack Prediction")
 col1, col2 = st.columns([3,1])
 with col1:
     st.markdown("""
