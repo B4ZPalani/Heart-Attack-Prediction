@@ -66,7 +66,7 @@ BMI=st.sidebar.number_input("BMI",18,100,18)
 Smoking = st.sidebar.selectbox("Have you smoked more than 100 cigarettes in"
                           " your entire life ?)",
                           options=("No", "Yes"))
-alcoholDink = st.sidebar.selectbox("How many drinks of alcohol do you have in a week?", options=("No", "Yes"))
+alcoholDink = st.sidebar.selectbox("Do you drink alcohol regularly on a weekly basis?", options=("No", "Yes"))
 
 sleepTime = st.sidebar.number_input("Hours of sleep per 24h", 0, 24, 7) 
 
