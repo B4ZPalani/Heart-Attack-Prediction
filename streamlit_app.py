@@ -36,16 +36,16 @@ submit = st.button("Predict")
 st.sidebar.title('Please, fill your informations to predict your heart condition')
 
 
-Race=st.sidebar.selectbox("Select your Race", ("Asian", 
+Race=st.sidebar.selectbox("Please Select your Race", ("Asian", 
                              "Black" ,
                              "Hispanic",
                              "American Indian/Alaskan Native",
                              "White",
                              "Other"
                              ))
-Gender=st.sidebar.selectbox("Select your gender", ("Female", 
+Gender=st.sidebar.selectbox("Please Select your gender", ("Female", 
                              "Male" ))
-Age=st.sidebar.selectbox("Select your age", 
+Age=st.sidebar.selectbox("Please Select your age", 
                             ("18-24", 
                              "25-29" ,
                              "30-34",
@@ -61,27 +61,25 @@ Age=st.sidebar.selectbox("Select your age",
                              "55-59",
                              "80 or older"))
 
-BMI=st.sidebar.number_input("BMI",18,100,18)
+BMI=st.sidebar.number_input("Please enter your BMI",18,100,18)
 
-Smoking = st.sidebar.selectbox("Have you smoked more than 100 cigarettes in"
-                          " your entire life ?)",
+Smoking = st.sidebar.selectbox("Have you smoked more than 100 cigarettes in  your entire life ?",
                           options=("No", "Yes"))
-alcoholDink = st.sidebar.selectbox("Do you drink alcohol regularly on a weekly basis?", options=("No", "Yes"))
+alcoholDink = st.sidebar.selectbox("Do you have more than 14 drinks of alcohol (men) or more than 7 (women) in a week?", options=("No", "Yes"))
 
-sleepTime = st.sidebar.number_input("Hours of sleep per 24h", 0, 24, 7) 
+sleepTime = st.sidebar.number_input("How many hours on average do you sleep?", 0, 24, 7) 
 
-genHealth = st.sidebar.selectbox("General health",
+genHealth = st.sidebar.selectbox("How would you describe your general health status?",
                              options=("Good","Excellent", "Fair", "Very good", "Poor"))
 
-physHealth = st.sidebar.number_input("Physical health in the past month (Excelent: 0 - Very bad: 30)"
+physHealth = st.sidebar.number_input("For how many days during the past 30 days was your physical health not good? (Excelent: 0 - Very bad: 30)"
                                  , 0, 30, 0)
-mentHealth = st.sidebar.number_input("Mental health in the past month (Excelent: 0 - Very bad: 30)"
+mentHealth = st.sidebar.number_input("For how many days during the past 30 days was your mental health not good? (Excelent: 0 - Very bad: 30)"
                                  , 0, 30, 0)
-physAct = st.sidebar.selectbox("Physical activity in the past month"
+physAct = st.sidebar.selectbox("In the past month, did you participate in any physical activities or exercises?"
                            , options=("No", "Yes"))
 
-diffWalk = st.sidebar.selectbox("Do you have serious difficulty walking"
-                            " or climbing stairs?", options=("No", "Yes"))
+diffWalk = st.sidebar.selectbox("Do you have serious difficulty walking or climbing stairs?", options=("No", "Yes"))
 diabetic = st.sidebar.selectbox("Have you ever had diabetes?",
                            options=("No", "Yes", "Yes, during pregnancy", "No, borderline diabetes"))
 asthma = st.sidebar.selectbox("Do you have asthma?", options=("No", "Yes"))
